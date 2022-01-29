@@ -1,0 +1,40 @@
+//Dfs
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+    public:
+        map<int,list<int>>adj;
+        map<int,bool>visited;
+
+        void addEdge(int v,int u){
+            adj[v].push_back(u);
+        }
+
+        void dfs(int v){
+            visited[v]=true;
+            cout<<v<<" ";
+
+            list<int>::iterator i;
+
+            for(i=adj[v].begin();i!=adj[v].end();++i)
+                if(!visited[*i])
+                    dfs(*i);
+        }
+};
+
+int main(){
+    Graph g;
+    g.addEdge(0,1);
+    g.addEdge(1,2);
+    g.addEdge(2,3);
+    g.addEdge(2,4);
+    g.addEdge(4,5);
+    g.addEdge(5,6);
+    g.addEdge(4,7);
+    g.addEdge(7,9);
+    g.addEdge(7,8);
+
+    g.dfs(0);
+    return 0;
+}
