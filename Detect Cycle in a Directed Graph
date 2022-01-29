@@ -1,0 +1,86 @@
+//Dfs
+#include<bits/stdc++.h>
+using namespace std;
+
+class Graph{
+    public:
+        map<int,list<int>>adj;
+        map<int,bool>visited;
+
+        void addEdge(int v,int u){
+            adj[v].push_back(u);
+        }
+
+        void dfs(int v){
+            visited[v]=true;
+            cout<<v<<" ";
+
+            list<int>::iterator i;
+
+            for(i=adj[v].begin();i!=adj[v].end();++i)
+                if(!visited[*i])
+                    dfs(*i);
+        }
+
+        bool isCyclicUtil(int i,bool visit[],bool *recStack){
+            if(visit[i]==false){
+                visit[i]=true;
+                recStack[i]=true;
+
+                list<int>::iterator u;
+                for(u=adj[i].begin();u!=adj[i].end();++u){
+                    if(!visit[*u] && isCyclicUtil(*u,visit,recStack))
+                        return true;
+                    else if(recStack[*u])
+                        return true;
+                }
+            }
+
+            recStack[i]=false;
+            return false;
+        }
+
+        bool isCyclic(){
+            int v = adj.size();
+            bool *visit = new bool[v];
+            bool *recStack = new bool[v];
+            for(int i=0;i<v;i++){
+                visit[i]=false;
+                recStack[i]=false;
+            }
+
+            for(int i=0;i<v;i++){
+                if(isCyclicUtil(i,visit,recStack))
+                    return true;
+            }
+
+            return false;
+        }
+
+        int retsize(){
+            return adj.size();
+        }
+
+};
+
+int main(){
+    Graph g;
+    g.addEdge(0,1);
+    g.addEdge(1,2);
+    g.addEdge(0,2);
+    g.addEdge(2,3);
+    g.addEdge(2,0);
+    g.addEdge(3,3);
+
+    g.dfs(0);
+    cout<<endl;
+    cout<<g.retsize()<<endl;
+
+    if(g.isCyclic()){
+        cout<<"Graph contains cycle\n";
+    }
+    else{
+        cout<<"Graph does't contain cycle\n";
+    }
+    return 0;
+}
