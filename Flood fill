@@ -1,0 +1,27 @@
+class Solution {
+public:
+    void dfs(int i,int j,vector<vector<int>>& visited,vector<vector<int>>& image,int newColor,int n,int m,int oldcolor){
+        // cout<<newColor<<endl;
+        if(i<0 or j<0 or i>=n or j>=m) return;
+        if(visited[i][j]==1 or image[i][j]!=oldcolor) return;
+        visited[i][j]=1;
+        image[i][j]=newColor;
+        // cout<<image[i][j]<<endl;
+        dfs(i+1,j,visited,image,newColor,n,m,oldcolor);
+        dfs(i-1,j,visited,image,newColor,n,m,oldcolor);
+        dfs(i,j+1,visited,image,newColor,n,m,oldcolor);
+        dfs(i,j-1,visited,image,newColor,n,m,oldcolor);
+
+
+    }
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        int x = image.size();
+        int y = image[0].size();
+        
+        vector<vector<int>>visited(x, vector<int>(y,0));
+        int oldcolor = image[sr][sc];
+        cout<<oldcolor<<" "<<newColor<<endl;
+        dfs(sr,sc,visited,image,newColor,x,y,oldcolor);
+        return image;
+    }
+};
