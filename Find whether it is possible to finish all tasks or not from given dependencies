@@ -1,0 +1,50 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool solve(vector<int> adj[],vector<int>&vis,vector<int>&order,int i){
+    vis[i]=1;
+    order[i]=1;
+    for(auto x:adj[i]){
+        if(!vis[i]){
+            bool cnf = solve(adj,vis,order,x);
+            if(cnf == true) return true;
+        }
+        else if(order[x]) return true;
+    }
+
+    order[i]=0;
+    return false;
+}
+
+bool isCyclic(vector<int> adj[],int n){
+    vector<int>vis(n,0);
+    vector<int>order(n,0);
+
+    for(int i=0;i<n;i++){
+        if(!vis[i]){
+            bool c = solve(adj,vis,order,i);
+            if(c==true) return true;
+        }    
+    }
+    return false;
+}
+
+int main(){
+
+    int n;cin>>n;
+    int e;cin>>e;
+    vector<int>g[n];
+    for(int i=0;i<e;i++){
+        int x,y;cin>>x>>y;
+        g[y].push_back(x);
+    }
+
+
+    if(isCyclic(g,n)){
+        cout<<"possible to finish all tasks or not from given dependencies"<<endl;
+    } else {
+        cout<<"Not possible to finish all tasks or not from given dependencies"<<endl;
+    }
+
+    return 0;
+}
