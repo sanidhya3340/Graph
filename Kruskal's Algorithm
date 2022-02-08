@@ -1,0 +1,71 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+struct element{
+    int u;
+    int v;
+    int w;
+    element(int x,int y,int z){
+        u=x;
+        v=y;
+        w=z;
+    }
+};
+
+bool comp(element a,element b){
+    return a.w<b.w;
+}
+
+bool contains(vector<int>g[],int x,int n){
+    for(int i=0;i<n;i++){
+        for(auto j : g[i]){
+            if(g[i][j]==x) return true;
+        }
+    }
+    return false;
+}
+
+int main(){
+
+    int n,e;cin>>n>>e;
+
+    vector<element>edges;
+
+    for(int i=0;i<e;i++){
+        int u,v,w;cin>>u>>v>>w;
+        edges.push_back(element(u,v,w));
+    }
+
+    sort(edges.begin(),edges.end(),comp);
+
+    vector<int>g[n];
+
+    vector<element>::iterator i;
+    int counter=n-1;
+    for(i=edges.begin();i!=edges.end();++i){
+        
+        g[i->u].push_back(i->v);
+        g[i->v].push_back(i->u);
+        counter--;
+        if(contains(g,i->u,n) && contains(g,i->v,n)){
+            cout<<"are bhai?"<<endl;
+            g[i->u].pop_back();
+            g[i->v].pop_back();
+            counter++;
+        }
+        if(counter==0){
+                break;
+        }
+
+    }
+    cout<<"Reached here"<<endl;
+    for(int i=0;i<n;i++){
+        cout<<i<<" is connected to: ";
+        for(int x=0;x<g[i].size();x++){
+            cout<<g[i][x]<<"->";
+        }
+        cout<<endl;
+    }
+
+    return 0;
+}
